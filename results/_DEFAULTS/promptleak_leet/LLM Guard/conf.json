@@ -1,0 +1,12 @@
+{
+	"server_type": "with LLM Guard",
+	"port": 5001,
+	"scan_intermediate_agent_steps": false,
+	"llm guard": {
+		"input_scanners": {
+			"transformer": {
+				"threshold": 0.5
+			}
+		}
+	}
+}

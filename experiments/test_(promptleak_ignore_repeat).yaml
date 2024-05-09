@@ -1,0 +1,7 @@
+attack_enhancements:
+- name: ignore
+  type: jailbreak
+- name: repeat
+  type: jailbreak
+attack_objective_class: promptleak
+task_type: test_attack
