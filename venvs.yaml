@@ -1,4 +1,5 @@
-default server venv path: \path\to\default\llm\server\venv\Scripts\python.exe
-LLMGuard server venv path: \path\to\LLMGuard\llm\server\venv\Scripts\python.exe
-Vigil server venv path: \path\to\Vigil\llm\server\venv\Scripts\python.exe
-Rebuff server venv path: \path\to\Rebuff\llm\server\venv\Scripts\python.exe
+default: path/to/main/venv/Scripts/python.exe
+LLMGuard: path/to/LLMGuard/venv/Scripts/python.exe
+Vigil: path/to/tmp/Vigil/Scripts/python.exe
+Rebuff: path/to/tmp/Rebuff/Scripts/python.exe
+tmp: path/to/tmp/venv/Scripts/python.exe

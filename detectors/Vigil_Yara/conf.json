@@ -1,0 +1,10 @@
+{
+	"vigil": {
+		"input_scanners": {
+			"yara": {
+				"use_scanner": true,
+				"yara_rules_dirpath": "path/to/vigil-llm-0.10.3-alpha/data/yara"
+			}
+		}
+	}
+}

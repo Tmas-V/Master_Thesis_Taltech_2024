@@ -1,0 +1,7 @@
+attack_enhancements: []
+attack_type: benign
+gen_samples_limit: -1
+rerun_validation: false
+val_samples_limit: 1000
+model_name: gpt-3.5-turbo
+use_valid_as_gen: false

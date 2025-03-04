@@ -1,100 +1,50 @@
 import sys, os
-from experiments import *
+from Experiment import *
+from Generator import *
+from Processor import *
 
 
-
-str_conf_files_dirpath = ".\\experiments"
+str_conf_files_dirpath = ".\\experiments\\"
 
 def generate_experiment_conf_data():
-    conf_data = Experiment("")
-    conf_data.task_type = "test_attack"
-    conf_data.attack_objective_class = "promptleak"
-    conf_data.attack_enhancements = [{
-        "type": "jailbreak",
-        "name": "ignore"
+    data = {
+        "attack_type" : "promptleak",
+        "attack_enhancements" : [
+        {
+            "type": "technique",
+            "name": "prefix"
         },
         {
-            "type": "jailbreak",
+            "type": "technique",
+            "name": "ignore"
+        },
+        {
+            "type": "obfuscation",
+            "name": "leet"
+        },
+        {
+            "type": "technique",
             "name": "repeat"
-        }]
-    conf_data.attack_enhancements = []
-    conf_data.save_to_yaml("test_(bare_promptleak).yaml")
-"""
+        },        
+        ],
+        "gen_samples_limit" : 1000,
+        "val_samples_limit" : 1000,
+        "rerun_validation" : False,
+        "model_name": "gpt-3.5-turbo",
+        "use_valid_as_gen": False
+    }
+    label = data["attack_type"]
+    for enhancement in data["attack_enhancements"]:
+        label += "_" + enhancement["name"]
+    if label[-1] == "_":
+        label = label[:-1]
+    filepath = str_conf_files_dirpath + label + ".yaml"
+    with open(filepath, "w") as file:
+        yaml.dump(data, file, default_flow_style=False, allow_unicode=True)
+'''
 generate_experiment_conf_data()
-quit(0)
-"""
-
-def run_manual_prompt():
-    print("----------Choose target server----------")
-    print("1) Default (no detections)")
-    print("2) With LLM Guard scanners")
-    print("3) With Vigil scanners")
-    print("4) With Rebuff scanners")   
-    print("----------------------------------")
-    print("(Type 0 to end program)")
-    print("")
-    int_choice = -1
-    while int_choice < 0 or int_choice >= 5:
-        int_choice = input("Target({}-{}): ".format(1, 4))
-        try:
-            int_choice = int(int_choice)
-        except:
-            print("[!] Incorrect input. Try again.")
-            int_choice = -2
-            continue
-    if int_choice == 0:
-        return 0
-    detections_choice = int_choice - 1
-    int_choice = input("Use agent with memory?(y/n):")
-    memory_choice = False
-    if int_choice == "y":
-        memory_choice = True
-    server_venvs = [os.path.abspath("..\\venv310\\Scripts\\python.exe"),
-                    os.path.abspath("..\\venv310_LLM-Guard\\Scripts\\python.exe"),
-                    os.path.abspath("..\\venv310_Vigil\\Scripts\\python.exe"),
-                    os.path.abspath("..\\venv310_Rebuff\\Scripts\\python.exe")]
-    server_cwds = [os.path.abspath(".\\server\\server(default)"),
-                   os.path.abspath(".\\server\\server(LLM Guard)"),
-                   os.path.abspath(".\\server\\server(Vigil)"),
-                   os.path.abspath(".\\server\\server(Rebuff)")]
-    servers_pys = ["no_detections_server.py",
-                   "LLMGuard_server.py",
-                   "Vigil_server.py",
-                   "Rebuff_server.py"]
-    server_ports = [5000,
-                    5001,
-                    5002,
-                    5003]
-    server_venv_path = server_venvs[detections_choice]
-    server_cwd_path = server_cwds[detections_choice]
-    server_py_path = "{}\\{}".format(server_cwd_path, servers_pys[detections_choice])
-    server_args = [server_venv_path,
-                    server_py_path
-                    ]
-    server_process = subprocess.Popen(args = server_args,
-                            cwd = server_cwd_path,
-                            creationflags=subprocess.CREATE_NEW_CONSOLE)    
-
-    client_venv = os.path.abspath("..\\venv310\\Scripts\\python.exe")
-    client_cwd = os.path.abspath(".\\client")
-    client_py = "manual_prompt_client.py"
-    client_venv_path = client_venv
-    client_cwd_path = client_cwd
-    client_py_path = "{}\\{}".format(client_cwd_path, client_py)
-    client_args = [client_venv_path,
-                    client_py_path,
-                   str(server_ports[detections_choice]),
-                   str(memory_choice)
-                    ]
-    choice = input("Proceed to run a client?(y/n)")
-    if choice == "y":
-        client_process = subprocess.Popen(args = client_args,
-                                cwd = client_cwd_path,
-                                creationflags=subprocess.CREATE_NEW_CONSOLE)
-        client_process.wait()
-    else:
-        print("Quitting...")
-    server_process.kill()
+sys.exit(0)
+'''
 
 
 def run_experiment_from_conf():
@@ -111,14 +61,20 @@ def run_experiment_from_conf():
         conf_filename = list_conf_files[i]
         conf_filename_no_ext = conf_filename.split(".")[0]
         print("{}) {}".format(i+1, conf_filename_no_ext))
+    print("*) All")
     print("---------------------------------")
     print("(Type 0 to end program)")
     print("")
     int_choice = -1
     str_chosen_filename = ""
     bool_run_experiment = True
+    bool_run_noconfirm = False
     while int_choice < 0 or int_choice >= len(list_conf_files):
-        int_choice = input("Conf to use ({}-{}): ".format(1, len(list_conf_files)))
+        int_choice = input("Conf to use ({}-{}, *): ".format(1, len(list_conf_files)))
+        if int_choice == "*":
+            list_chosen_exp_labels = [item.split(".")[0] for item in list_conf_files]
+            bool_run_noconfirm = True
+            break
         try:
             int_choice = int(int_choice)
         except:
@@ -132,10 +88,40 @@ def run_experiment_from_conf():
         if int_choice < 0 or int_choice >= len(list_conf_files):
             print("[!] Incorrect input. Try again.")
         else:
-            str_chosen_filename = list_conf_files[int_choice]
+            list_chosen_exp_labels = [list_conf_files[int_choice].split(".")[0]]
     if bool_run_experiment:
-        experiment = Experiment(str_chosen_filename)
-        experiment.run()  
+        for str_chosen_exp_label in list_chosen_exp_labels:
+            experiment = Experiment(str_chosen_exp_label)
+            experiment.debug_log()
+            gen_val_result = 1
+            if not bool_run_noconfirm:
+                generator = Generator(experiment)
+                gen_val_result = generator.run()
+            if gen_val_result == 1:
+                print("[0] Generation and Validation were successful!")
+                str_processor_types = [
+                    "LLMGuard_Transformer",
+                    "Vigil_Yara",
+                    "Vigil_Transformer",
+                    "Vigil_VDB",
+                    "Vigil_Canary",
+                    "Vigil_PRSimilarity",
+                    "Rebuff_Heuristics",
+                    "Rebuff_Model",
+                    "Rebuff_VDB",
+                    "Rebuff_Canary"
+                ]
+                for str_processor_type in str_processor_types:
+                    processor = Processor(str_processor_type, experiment)
+                    processor_result = processor.run()
+                    if processor_result == 1:
+                        print("[0] Detector {} was successful!".format(str_processor_type))
+                    elif processor_result == 0:
+                        print("[0] Detector {} was not run.".format(str_processor_type))
+                    else:
+                        print("[!] Detector {} HAS FAILED!".format(str_processor_type))
+            else:
+                print("[!] Generation and Validation failed!")
 
 
 

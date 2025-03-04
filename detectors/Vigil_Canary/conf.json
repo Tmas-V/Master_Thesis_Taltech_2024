@@ -1,0 +1,9 @@
+{
+	"vigil": {
+		"canary_check":{
+			"use_scanner": true,
+			"usage_type": "default",
+			"model_name": "gpt-3.5-turbo"
+		}
+	}
+}

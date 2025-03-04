@@ -1,0 +1,12 @@
+{
+	"rebuff": {
+		"server_address": "192.168.247.162",
+		"server_port": 5555,
+		"input_scanners": {
+			"model": {
+				"use_scanner": true,
+				"threshold": 0.0
+			}
+		}
+	}
+}

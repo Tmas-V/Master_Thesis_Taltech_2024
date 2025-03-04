@@ -1,0 +1,9 @@
+attack_enhancements:
+- name: prefix
+  type: technique
+attack_type: promptleak
+gen_samples_limit: -1
+model_name: gpt-3.5-turbo
+rerun_validation: false
+val_samples_limit: 1000
+use_valid_as_gen: false

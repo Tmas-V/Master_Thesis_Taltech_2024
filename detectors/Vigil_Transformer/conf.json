@@ -1,0 +1,11 @@
+{
+	"vigil": {
+		"input_scanners": {
+			"transformer": {
+				"use_scanner": true,
+				"model": "protectai/deberta-v3-base-prompt-injection-v2",
+				"threshold": 0.0
+			}
+		}
+	}
+}

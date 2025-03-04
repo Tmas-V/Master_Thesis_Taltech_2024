@@ -1,7 +1,0 @@
-attack_enhancements:
-- name: ignore
-  type: jailbreak
-- name: leet
-  type: obfuscation
-attack_objective_class: promptleak
-task_type: test_attack

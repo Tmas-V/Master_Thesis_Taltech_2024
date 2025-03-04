@@ -1,0 +1,10 @@
+{
+	"vigil": {
+		"output_scanners": {
+			"similarity": {
+				"use_scanner": true,
+				"threshold": 0.0
+			}
+		}
+	}
+}

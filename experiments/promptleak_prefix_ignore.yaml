@@ -1,0 +1,11 @@
+attack_enhancements:
+- name: prefix
+  type: technique
+- name: ignore
+  type: technique
+attack_type: promptleak
+gen_samples_limit: 1200
+rerun_validation: false
+val_samples_limit: 1000
+model_name: gpt-4o
+use_valid_as_gen: true

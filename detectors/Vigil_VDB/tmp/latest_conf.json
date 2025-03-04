@@ -1,0 +1,11 @@
+{
+    "vigil": {
+        "input_scanners": {
+            "vectordb": {
+                "use_scanner": true,
+                "vdb_dirpath": "path/to/vigil-llm-0.10.3-alpha/data/vdb",
+                "threshold": 1.0
+            }
+        }
+    }
+}

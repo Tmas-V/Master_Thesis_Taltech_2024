@@ -1,0 +1,11 @@
+attack_enhancements:
+- name: ignore
+  type: technique
+- name: leet
+  type: obfuscation
+attack_type: promptleak
+gen_samples_limit: 3700
+rerun_validation: false
+val_samples_limit: 1000
+model_name: gpt-4o
+use_valid_as_gen: true

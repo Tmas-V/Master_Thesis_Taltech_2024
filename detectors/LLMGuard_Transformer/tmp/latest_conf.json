@@ -1,0 +1,11 @@
+{
+    "llm guard": {
+        "input_scanners": {
+            "transformer": {
+                "threshold": 0.0,
+                "model": "ProtectAI/deberta-v3-base-prompt-injection-v2",
+                "match_type": "SENTENCE"
+            }
+        }
+    }
+}

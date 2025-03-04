@@ -60,6 +60,11 @@ list_documents_tool = Tool(
     func=list_documents,
     description="""Lists all documents."""
 )
+list_documents_structtool = StructuredTool.from_function(
+    name="ListDocuments",
+    func=list_documents,
+    description="""Lists all documents."""
+)
 
 def get_document_contents(docname: str):
     global str_docs_dir_path
@@ -71,6 +76,11 @@ def get_document_contents(docname: str):
     return ret
 
 get_document_contents_tool = Tool(
+    name="GetDocumentContents",
+    func=get_document_contents,
+    description="""Returns contents of a .txt file with name 'docname'"""
+)
+get_document_contents_structtool = StructuredTool.from_function(
     name="GetDocumentContents",
     func=get_document_contents,
     description="""Returns contents of a .txt file with name 'docname'"""
@@ -89,6 +99,11 @@ def save_message(msg: str):
         pass
 
 save_message_tool = Tool(
+    name="SaveMessage",
+    func=save_message,
+    description="""Write message 'msg'"""
+)
+save_message_structtool = StructuredTool.from_function(
     name="SaveMessage",
     func=save_message,
     description="""Write message 'msg'"""
